@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using MathNet.Numerics;
+using System.IO;
 
 namespace Lab2A
 {
-    class Event
+    public class Event
     {
         public double time { get; set; }
         public string type { get; set; }
@@ -17,7 +17,7 @@ namespace Lab2A
             type = mtype;           
         }
     }
-    class Program
+    static class Program
     {
         static void Main(string[] args)
         {
@@ -40,14 +40,21 @@ namespace Lab2A
 
             int bandwidth = HIGH;
 
+            string[] datatime = new string[200];
+            string[] databuffer = new string[200];
+            string[] databand = new string[200];
+            int i = 0;
+
             List<Event> events = new List<Event>();
             Event estream = new Event(Randomnumbergenerator(current_time), "Zmiana strumienia");
             Event ebuffer = new Event(current_time + (pack_size / bandwidth), "Zmiana bufora");
             events.Add(estream);
             events.Add(ebuffer);
 
-            Console.WriteLine(current_time*100 + " " + bandwidth + " " + buffer*100);
-
+            Console.WriteLine(current_time*10 + " " + bandwidth + " " + buffer);
+            datatime[i] = Convert.ToString(current_time);
+            databuffer[i] = Convert.ToString(buffer);
+            databand[i] = Convert.ToString(bandwidth);
             while (current_time < end_time)
             {
                
@@ -55,7 +62,7 @@ namespace Lab2A
                 Event my_event = new Event(events[0].time, events[0].type);
 
                 if (my_event.type == "Zmiana bufora")
-                start_time = current_time;
+                    start_time = current_time;
 
                 current_time = my_event.time;
 
@@ -76,9 +83,22 @@ namespace Lab2A
 
                     events.Add(new Event(current_time + (pack_size / bandwidth), "Zmiana bufora"));
                 }
-                Console.WriteLine(current_time * 100 + " " + bandwidth + " " + buffer * 100);
+               Console.WriteLine(current_time * 10 + " " + bandwidth + " " + buffer);
+                i++;
+                datatime[i] = Convert.ToString(current_time);
+                databuffer[i] = Convert.ToString(buffer);
+                databand[i] = Convert.ToString(bandwidth);
+
                 events.Remove(events[0]);
             }
+            System.IO.File.WriteAllLines(@"D:\czas.txt", datatime);
+            System.IO.File.WriteAllLines(@"D:\bufor.txt", databuffer);
+            System.IO.File.WriteAllLines(@"D:\pasmo.txt", databand);
+
+            var guiForm = new Form1();
+           
+            guiForm.ShowDialog();
+
             Console.ReadKey();
         }
     }
