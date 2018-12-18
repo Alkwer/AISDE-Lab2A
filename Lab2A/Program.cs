@@ -65,7 +65,7 @@ namespace Lab2A
                         bandwidth = HIGH;
                     else bandwidth = LOW;
 
-                    events.Add(new Event(Randomnumbergenerator(current_time), "Zmiana Strumienia"));
+                    events.Add(new Event(Randomnumbergenerator(current_time), "Zmiana strumienia"));
                 }
                 else if (my_event.type == "Zmiana bufora")
                 {
