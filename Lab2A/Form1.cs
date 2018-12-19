@@ -16,7 +16,7 @@ namespace Lab2A
         {
             InitializeComponent();
             createchart();
-            
+
         }
         void createchart()
         {

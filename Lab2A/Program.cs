@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
+using MathNet.Numerics.Distributions;
+using MathNet.Numerics.Random;
 
 namespace Lab2A
 {
@@ -23,9 +25,9 @@ namespace Lab2A
         {
             double Randomnumbergenerator(double time)
             {
-                Random rand = new Random((int)DateTime.Now.Ticks);
+                Poisson rand = new Poisson(10.0);
                 double number;
-                number = rand.Next(11, 20) + time;
+                number = rand.Sample()+time;
                 return number;
             }
 
@@ -85,9 +87,9 @@ namespace Lab2A
                 }
                Console.WriteLine(current_time * 10 + " " + bandwidth + " " + buffer);
                 i++;
-                datatime[i] = Convert.ToString(current_time);
-                databuffer[i] = Convert.ToString(buffer);
-                databand[i] = Convert.ToString(bandwidth);
+                datatime[i] = Convert.ToString(Convert.ToInt32(current_time));
+                databuffer[i] = Convert.ToString(Convert.ToInt32(buffer));
+                databand[i] = Convert.ToString(Convert.ToInt32(bandwidth));
 
                 events.Remove(events[0]);
             }
