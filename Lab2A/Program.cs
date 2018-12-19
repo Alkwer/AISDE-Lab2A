@@ -33,7 +33,7 @@ namespace Lab2A
 
             const int HIGH = 5;
             const int LOW = 1;
-            const double pack_size = 5;
+            const double pack_size = 2.5;
 
             double current_time = 0;
             double start_time = 0;
