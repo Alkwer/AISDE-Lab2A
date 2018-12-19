@@ -27,13 +27,13 @@ namespace Lab2A
             {
                 Poisson rand = new Poisson(10.0);
                 double number;
-                number = rand.Sample()+time;
+                number = rand.Sample() + time;
                 return number;
             }
 
             const int HIGH = 5;
             const int LOW = 1;
-            const double pack_size = 2.5;
+            const double pack_size = 5;
 
             double current_time = 0;
             double start_time = 0;
@@ -42,10 +42,9 @@ namespace Lab2A
 
             int bandwidth = HIGH;
 
-            string[] datatime = new string[200];
-            string[] databuffer = new string[200];
-            string[] databand = new string[200];
-            int i = 0;
+            List<string> datatime = new List<string>();
+            List<string> databuffer = new List<string>();
+            List<string> databand = new List<string>();
 
             List<Event> events = new List<Event>();
             Event estream = new Event(Randomnumbergenerator(current_time), "Zmiana strumienia");
@@ -53,10 +52,10 @@ namespace Lab2A
             events.Add(estream);
             events.Add(ebuffer);
 
-            Console.WriteLine(current_time*10 + " " + bandwidth + " " + buffer);
-            datatime[i] = Convert.ToString(current_time);
-            databuffer[i] = Convert.ToString(buffer);
-            databand[i] = Convert.ToString(bandwidth);
+            Console.WriteLine(current_time + " " + bandwidth + " " + buffer);
+            datatime.Add(Convert.ToString(current_time));
+            databuffer.Add(Convert.ToString(buffer*10));
+            databand.Add(Convert.ToString(bandwidth*10));
             while (current_time < end_time)
             {
                
@@ -85,11 +84,10 @@ namespace Lab2A
 
                     events.Add(new Event(current_time + (pack_size / bandwidth), "Zmiana bufora"));
                 }
-               Console.WriteLine(current_time * 10 + " " + bandwidth + " " + buffer);
-                i++;
-                datatime[i] = Convert.ToString(Convert.ToInt32(current_time));
-                databuffer[i] = Convert.ToString(Convert.ToInt32(buffer));
-                databand[i] = Convert.ToString(Convert.ToInt32(bandwidth));
+               Console.WriteLine(current_time + " " + bandwidth + " " + buffer);
+                datatime.Add(Convert.ToString(Convert.ToInt32(current_time)));
+                databuffer.Add(Convert.ToString(Convert.ToInt32(buffer*10)));
+                databand.Add(Convert.ToString(Convert.ToInt32(bandwidth*10)));
 
                 events.Remove(events[0]);
             }
