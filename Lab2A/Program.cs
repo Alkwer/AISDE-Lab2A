@@ -9,11 +9,12 @@ using MathNet.Numerics.Random;
 
 namespace Lab2A
 {
+ 
     public class Event
     {
         public double time { get; set; }
-        public string type { get; set; }
-        public Event(double mtime, string mtype)
+        public int type { get; set; }
+        public Event(double mtime, int mtype)
         {
             time = mtime;
             type = mtype;           
@@ -21,19 +22,20 @@ namespace Lab2A
     }
     static class Program
     {
+        enum TYPE {S,B};
         static void Main(string[] args)
         {
             double Randomnumbergenerator(double time)
             {
-                Poisson rand = new Poisson(10.0);
+                Poisson rand = new Poisson(16.0);
                 double number;
                 number = rand.Sample() + time;
                 return number;
             }
 
-            const int HIGH = 5;
-            const int LOW = 1;
-            const double pack_size = 2.5;
+            const int HIGH = 6;
+            const int LOW = 2;
+            const double pack_size = 3;
 
             double current_time = 0;
             double start_time = 0;
@@ -47,8 +49,8 @@ namespace Lab2A
             List<string> databand = new List<string>();
 
             List<Event> events = new List<Event>();
-            Event estream = new Event(Randomnumbergenerator(current_time), "Zmiana strumienia");
-            Event ebuffer = new Event(current_time + (pack_size / bandwidth), "Zmiana bufora");
+            Event estream = new Event(Randomnumbergenerator(current_time), Convert.ToInt32(TYPE.S));
+            Event ebuffer = new Event(current_time + (pack_size / bandwidth), Convert.ToInt32(TYPE.B));
             events.Add(estream);
             events.Add(ebuffer);
 
@@ -62,27 +64,27 @@ namespace Lab2A
                 events.Sort((x, y) => x.time.CompareTo(y.time));
                 Event my_event = new Event(events[0].time, events[0].type);
 
-                if (my_event.type == "Zmiana bufora")
+                if (my_event.type == 1)
                     start_time = current_time;
 
                 current_time = my_event.time;
 
-                if (my_event.type == "Zmiana strumienia")
+                if (my_event.type == 0)
                 {
                     if (bandwidth == LOW)
                         bandwidth = HIGH;
                     else bandwidth = LOW;
 
-                    events.Add(new Event(Randomnumbergenerator(current_time), "Zmiana strumienia"));
+                    events.Add(new Event(Randomnumbergenerator(current_time), Convert.ToInt32(TYPE.S)));
                 }
-                else if (my_event.type == "Zmiana bufora")
+                else if (my_event.type == 1)
                 {
                     buffer++;
                     buffer = buffer - (current_time - start_time);
                     if (buffer > 30) buffer = 30;
                     if (buffer < 0) buffer = 0;
 
-                    events.Add(new Event(current_time + (pack_size / bandwidth), "Zmiana bufora"));
+                    events.Add(new Event(current_time + (pack_size / bandwidth), Convert.ToInt32(TYPE.B)));
                 }
                Console.WriteLine(current_time + " " + bandwidth + " " + buffer);
                 datatime.Add(Convert.ToString(Convert.ToInt32(current_time)));
