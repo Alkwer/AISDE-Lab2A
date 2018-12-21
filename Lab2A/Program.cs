@@ -40,6 +40,7 @@ namespace Lab2A
             double current_time = 0;
             double start_time = 0;
             double end_time = 150;
+            double time_t = 0;
             double buffer = 0;
 
             int bandwidth = HIGH;
@@ -66,14 +67,23 @@ namespace Lab2A
 
                 if (my_event.type == 1)
                     start_time = current_time;
-
-                current_time = my_event.time;
-
+                if (my_event.type == 0)
+                    time_t = my_event.time;
+                else
+                    current_time = my_event.time;
+                
                 if (my_event.type == 0)
                 {
                     if (bandwidth == LOW)
+                    {
                         bandwidth = HIGH;
-                    else bandwidth = LOW;
+                        //current_time = current_time + (pack_size / bandwidth);
+                    }
+                    else
+                    {
+                        bandwidth = LOW;
+                        //current_time = current_time - (pack_size / bandwidth);
+                    }
 
                     events.Add(new Event(Randomnumbergenerator(current_time), Convert.ToInt32(TYPE.S)));
                 }
@@ -85,12 +95,16 @@ namespace Lab2A
                     if (buffer < 0) buffer = 0;
 
                     events.Add(new Event(current_time + (pack_size / bandwidth), Convert.ToInt32(TYPE.B)));
+
+                    datatime.Add(Convert.ToString(Convert.ToInt32(current_time)));
+                    databuffer.Add(Convert.ToString(Convert.ToInt32(buffer * 10)));
+                    databand.Add(Convert.ToString(Convert.ToInt32(bandwidth * 10)));
                 }
                Console.WriteLine(current_time + " " + bandwidth + " " + buffer);
-                datatime.Add(Convert.ToString(Convert.ToInt32(current_time)));
+                /*datatime.Add(Convert.ToString(Convert.ToInt32(current_time)));
                 databuffer.Add(Convert.ToString(Convert.ToInt32(buffer*10)));
                 databand.Add(Convert.ToString(Convert.ToInt32(bandwidth*10)));
-
+                */
                 events.Remove(events[0]);
             }
             System.IO.File.WriteAllLines(@"D:\czas.txt", datatime);
